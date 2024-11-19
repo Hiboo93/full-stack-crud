@@ -1,8 +1,12 @@
 import React from "react";
 
-const Navbar = () => {
+type NavbarPropsTypes = {
+  onOpen: () => void;
+}
+
+const Navbar = ({ onOpen }: NavbarPropsTypes) => {
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 p-4">
       <div className="navbar-start">
         <a className="btn btn-ghost text-xl">Clients</a>
       </div>
@@ -16,7 +20,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="navbar-end">
-        <a className="btn btn-primary">Button</a>
+        <a className="btn btn-primary" onClick={onOpen}>Add Client</a>
       </div>
     </div>
   );
