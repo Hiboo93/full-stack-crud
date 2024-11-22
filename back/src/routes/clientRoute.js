@@ -8,6 +8,7 @@ const router = express.Router();
 // })
 
 router.get("/clients", clientController.getAllClients);
+router.get("/clients/search", clientController.searchClients);
 router.post("/clients", clientController.createClient);
 router.put("/clients/:id", clientController.updateClient);
 router.delete("/clients/:id", clientController.deleteClient);

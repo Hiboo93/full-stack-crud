@@ -10,6 +10,16 @@ export const getAllClients = async (req, res) => {
   }
 }
 
+export const searchClients = async (req, res) => {
+  try {
+    const searchTerm = req.query.q;
+    const clients = await clientServices.searchClients(searchTerm)
+    res.status(200).json(clients);
+  } catch (error) {
+    console.error("Error searching clients:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
 export const createClient = async (req, res) => {
   try {
     const clientData = req.body;
@@ -53,3 +63,4 @@ export const deleteClient = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
+
