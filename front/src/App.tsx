@@ -6,6 +6,7 @@ import TableList from "./components/TableList.js";
 export default function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleOpen = (mode: "add" | "edit") => {
     setModalMode(mode)
@@ -22,8 +23,8 @@ export default function App() {
 
   return (
     <>
-      <Navbar onOpen={() => handleOpen("add")} />
-      <TableList handleOpen={handleOpen}/>
+      <Navbar onOpen={() => handleOpen("add")} onSearch={setSearchTerm} />
+      <TableList handleOpen={handleOpen} searchTerm={searchTerm}/>
       <ModalForm
         isOpen={isOpen}
         onSubmit={handleSubmit}

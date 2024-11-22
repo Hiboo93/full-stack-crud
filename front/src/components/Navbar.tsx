@@ -2,9 +2,13 @@ import React from "react";
 
 type NavbarPropsTypes = {
   onOpen: () => void;
+  onSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Navbar = ({ onOpen }: NavbarPropsTypes) => {
+const Navbar = ({ onOpen, onSearch }: NavbarPropsTypes) => {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onSearch(event.target.value);
+  }
   return (
     <div className="navbar bg-base-100 p-4">
       <div className="navbar-start">
@@ -16,6 +20,7 @@ const Navbar = ({ onOpen }: NavbarPropsTypes) => {
             type="text"
             placeholder="Search"
             className="input input-bordered w-48 md:w-auto"
+            onChange={handleSearchChange}
           />
         </div>
       </div>
