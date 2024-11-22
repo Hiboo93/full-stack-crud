@@ -7,7 +7,10 @@ const router = express.Router();
 //   res.send("Hello World");
 // })
 
-router.get("/clients", clientController.getClients);
+router.get("/clients", clientController.getAllClients);
+router.post("/clients", clientController.createClient);
+router.put("/clients/:id", clientController.updateClient);
+router.delete("/clients/:id", clientController.deleteClient);
 
 
 export default router;
