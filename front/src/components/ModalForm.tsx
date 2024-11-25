@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ClientType, NewClientType } from "../types.js";
 
-// type ModalPropsTypes = {
-//   isOpen: boolean;
-//   onClose: () => void;
-//   onSubmit: (data: ClientType) => void;
-//   mode: "add" | "edit";
-//   clientData?: ClientType;
-// }
 
-//TEST
 type ModalPropsTypes = {
   isOpen: boolean;
   onClose: () => void;
@@ -36,33 +28,12 @@ const ModalForm = ({
     setStatus(statusElement.value === "Active");
   };
 
-  
-  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   try {
-  //     const newClientData: ClientType = {
-  //       id: clientData?.id, // Inclut l'ID si en mode édition
-  //       rate: Number(rate),
-  //       name,
-  //       email,
-  //       job,
-  //       isactive: status,
-  //     };
-  //     onSubmit(newClientData);
-  //     console.log("Données du client soumises :", newClientData);
-  //   } catch (error) {
-  //     console.error("Erreur lors de la soumission du client :", error);
-  //   }
-  //   onClose();
-  // };
-
-  //TEST
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       if (mode === "edit" && clientData) {
         const updatedClientData: ClientType = {
-          id: clientData.id, // 'id' est présent
+          id: clientData.id,
           rate: Number(rate),
           name,
           email,
@@ -104,14 +75,12 @@ const ModalForm = ({
 
   return (
     <>
-      {/* You can open the modal using document.getElementById('ID').showModal() method */}
       <dialog id="my_modal_3" className="modal" open={isOpen}>
         <div className="modal-box">
           <h3 className="font-bold text-lg py-4">
             {mode === "edit" ? "Edit Client" : "Client Details"}
           </h3>
           <form method="dialog" onSubmit={handleSubmit}>
-            {/* if there is a button in form, it will close the modal */}
             <label className="input input-bordered flex items-center gap-2 my-3">
               Name
               <input
