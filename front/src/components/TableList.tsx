@@ -2,57 +2,15 @@ import React, { useEffect, useState } from "react";
 import { ClientType } from "../types.js";
 import axios from "axios";
 
+
 type PropsType = {
-  handleOpen: (mode: "add" | "edit") => void;
+  handleOpen: (mode: "add" | "edit", client?: ClientType) => void; // Ajout du client facultatif
   searchTerm: string;
 };
 
 const TableList = ({ handleOpen, searchTerm }: PropsType) => {
-  // let clientsData = [
-  //   {
-  //     id: 1,
-  //     name: "Osvaldo",
-  //     email: "osbaldo@gmail.com",
-  //     job: "Developer",
-  //     rate: "100",
-  //     isactive: true,
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Tremaine",
-  //     email: "tremaine@gmail.com",
-  //     job: "Ux Designer",
-  //     rate: "100",
-  //     isactive: true,
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Mosh",
-  //     email: "moshe@gmail.com",
-  //     job: "Lead dev",
-  //     rate: "100",
-  //     isactive: false,
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Gregg",
-  //     email: "gregg@gmail.com",
-  //     job: "Project manager",
-  //     rate: "100",
-  //     isactive: false,
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Giselle",
-  //     email: "gisselle@gmail.com",
-  //     job: "Developer",
-  //     rate: "100",
-  //     isactive: true,
-  //   },
-  // ];
-
   const [tableData, setTableData] = useState<ClientType[]>([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   //Version avec fetch()
   // useEffect(() => {
@@ -75,7 +33,7 @@ const TableList = ({ handleOpen, searchTerm }: PropsType) => {
         const response = await axios.get("http://localhost:3000/api/clients");
         setTableData(response.data);
       } catch (err) {
-        //setError(err.message);
+        setError("Impossible de récupérer les données");
       }
     };
 
@@ -89,6 +47,20 @@ const TableList = ({ handleOpen, searchTerm }: PropsType) => {
       client.job.toLocaleLowerCase().includes(searchTerm.toLowerCase())
     );
   });
+
+  const handleDelete = async (clientId: number) => {
+    const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer ce client ?");
+    if (!confirmDelete) return;
+  
+    try {
+      await axios.delete(`http://localhost:3000/api/clients/${clientId}`);
+      setTableData((prevData) => prevData.filter((client) => client.id !== clientId));
+      console.log(`Client avec l'ID ${clientId} supprimé.`);
+    } catch (error) {
+      console.error("Erreur lors de la suppression du client :", error);
+      setError("Erreur lors de la suppression du client.");
+    }
+  };
 
   return (
     <div>
@@ -126,8 +98,8 @@ const TableList = ({ handleOpen, searchTerm }: PropsType) => {
           </thead>
           <tbody className="hover">
             {/* row 1 */}
-            {filteredData.map((client, index) => (
-              <tr key={index}>
+            {filteredData.map((client) => (
+              <tr key={client.id}>
                 <th>{client.id}</th>
                 <td>{client.name}</td>
                 <td>{client.email}</td>
@@ -146,14 +118,14 @@ const TableList = ({ handleOpen, searchTerm }: PropsType) => {
                 </td>
                 <td>
                   <button
-                    onClick={() => handleOpen("edit")}
+                    onClick={() => handleOpen("edit", client)}
                     className="btn btn-secondary"
                   >
                     Update
                   </button>
                 </td>
                 <td>
-                  <button className="btn btn-error">Delete</button>
+                  <button className="btn btn-error" onClick={() => handleDelete(client.id)}>Delete</button>
                 </td>
               </tr>
             ))}
