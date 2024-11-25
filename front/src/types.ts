@@ -3,6 +3,8 @@ export type ClientType = {
   name: string;
   email: string;
   job: string;
-  rate: string;
+  rate: number;
   isactive: boolean;
 }
+
+export type NewClientType = Omit<ClientType, 'id'>;
